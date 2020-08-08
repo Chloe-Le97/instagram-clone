@@ -10,10 +10,12 @@
   display: flex;
   align-content: center;
   justify-content: space-between;
-  position: fixed;
-  width: 99%;
+  position: sticky;
+  top: 0;
+  width: 98%;
   margin: 0 auto;
   z-index: 200;
+  padding-right: 100px;
 }
 .App {
   background-color: #fafafa;
@@ -24,5 +26,5 @@
   justify-content: center;
 }
 .app_post {
-  padding-top: 120px;
+  padding: 20px;
 }
