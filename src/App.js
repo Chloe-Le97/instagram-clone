@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import Post from "./Post";
 import ImageUpload from "./ImageUpload";
+import Profile from "./Profile";
 import { db, auth } from "./firebase";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
@@ -37,6 +38,7 @@ function App() {
   const [open, setOpen] = useState(false);
   const [openSignIn, setOpenSignIn] = useState(false);
   const [openUploadImage, setOpenUploadImage] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -100,10 +102,22 @@ function App() {
       <Modal open={openUploadImage} onClose={() => setOpenUploadImage(false)}>
         <div style={modalStyle} className={classes.paper}>
           {user?.displayName ? (
-            <ImageUpload username={user.displayName} />
+            <ImageUpload user={user} username={user.displayName} />
           ) : (
-            <ImageUpload username={username} />
+            <ImageUpload user={user} username={username} />
           )}
+        </div>
+      </Modal>
+      <Modal open={openProfile} onClose={() => setOpenProfile(false)}>
+        <div style={modalStyle} className={classes.paper}>
+          <center>
+            <img
+              className="app_header_img"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/128px-Instagram_logo.svg.png"
+              alt="instagram"
+            ></img>
+          </center>
+          <Profile user={user}></Profile>
         </div>
       </Modal>
       <Modal open={open} onClose={() => setOpen(false)}>
@@ -173,6 +187,7 @@ function App() {
         ></img>
         {user ? (
           <div>
+            <Button onClick={() => setOpenProfile(true)}>Profile</Button>
             <Button onClick={() => setOpenUploadImage(true)}>
               Upload Image
             </Button>
@@ -187,17 +202,20 @@ function App() {
         )}
       </div>
 
-      <div className="app_post">
-        {posts.map(({ id, post }) => (
-          <Post
-            key={id}
-            postId={id}
-            user={user}
-            username={post.username}
-            caption={post.caption}
-            imageUrl={post.imageUrl}
-          />
-        ))}
+      <div className="app_post_container">
+        <div className="app_post">
+          {posts.map(({ id, post }) => (
+            <Post
+              key={id}
+              postId={id}
+              user={user}
+              avatar={post.userAvatar}
+              username={post.username}
+              caption={post.caption}
+              imageUrl={post.imageUrl}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import firebase from "firebase";
 import { storage, db } from "./firebase";
 import "./ImageUpload.css";
 
-function ImageUpload({ username }) {
+function ImageUpload({ user, username }) {
   const [caption, setCaption] = useState("");
   const [progress, setProgress] = useState(0);
   const [image, setImage] = useState(null);
@@ -38,6 +38,7 @@ function ImageUpload({ username }) {
           .getDownloadURL()
           .then((url) => {
             db.collection("posts").add({
+              userAvatar: user.photoURL,
               timestamp: firebase.firestore.FieldValue.serverTimestamp(),
               caption: caption,
               imageUrl: url,
