@@ -21,6 +21,7 @@
 .app_footer_btn {
   margin: 0 auto;
   box-shadow: 1px 3px 44px -24px rgba(0, 0, 0, 0.75);
+  background-color: white;
 }
 .app_footer_btn_container {
   position: relative;
@@ -28,9 +29,12 @@
   width: 75px;
   height: 75px;
   border-radius: 50%;
+  /* background-color: white; */
 }
 .app_upload {
   text-align: center;
+  background-color: white;
+  border-radius: 50%;
 }
 .app_footer {
   background-color: white;
