@@ -62,7 +62,7 @@ function Profile({ user }) {
   return (
     <div className="profile">
       <center>
-        <Avatar className="post_avatar" src={`${user.photoURL}`} />
+        <Avatar className="profile_avatar" src={`${user.photoURL}`} />
         <Button onClick={changeAvatar}>Change Profile Photo</Button>
         {uploadMenu ? (
           <div>
