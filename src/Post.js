@@ -65,12 +65,14 @@ function Post({ postId, user, username, imageUrl, caption, avatar }) {
     event.preventDefault();
 
     db.collection("posts").doc(postId).collection("comments").add({
-      userAvatar: user.photoURL,
       text: comment,
       username: user.displayName,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
     setComment("");
+  };
+  const notLike = (event) => {
+    alert("Sign In to like this post");
   };
   const likeAction = async (event) => {
     if (!like) {
@@ -126,6 +128,7 @@ function Post({ postId, user, username, imageUrl, caption, avatar }) {
             control={
               <Checkbox
                 checked={false}
+                onChange={notLike}
                 icon={<FavoriteBorder />}
                 checkedIcon={<Favorite />}
                 name="checked"
@@ -148,12 +151,12 @@ function Post({ postId, user, username, imageUrl, caption, avatar }) {
         <strong>{username}</strong>
         &nbsp;{caption}
       </h4>
-      <div className="post_comment">
+      <div className="post_comment_container">
         {comments.map((comment) => (
-          <p>
+          <div className="post_comment">
             <strong>{comment.username}</strong>
             &nbsp;{comment.text}
-          </p>
+          </div>
         ))}
       </div>
       {user ? (

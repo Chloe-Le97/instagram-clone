@@ -8,6 +8,8 @@ import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import { Input } from "@material-ui/core";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import IconButton from "@material-ui/core/IconButton";
 
 function getModalStyle() {
   const top = 50;
@@ -186,11 +188,8 @@ function App() {
           alt="instagram"
         ></img>
         {user ? (
-          <div>
+          <div className="app_header_btn">
             <Button onClick={() => setOpenProfile(true)}>Profile</Button>
-            <Button onClick={() => setOpenUploadImage(true)}>
-              Upload Image
-            </Button>
             <Button onClick={signOut}>Sign Out</Button>
           </div>
         ) : (
@@ -202,19 +201,28 @@ function App() {
         )}
       </div>
 
-      <div className="app_post_container">
-        <div className="app_post">
-          {posts.map(({ id, post }) => (
-            <Post
-              key={id}
-              postId={id}
-              user={user}
-              avatar={post.userAvatar}
-              username={post.username}
-              caption={post.caption}
-              imageUrl={post.imageUrl}
-            />
-          ))}
+      <div className="app_post">
+        {posts.map(({ id, post }) => (
+          <Post
+            key={id}
+            postId={id}
+            user={user}
+            avatar={post.userAvatar}
+            username={post.username}
+            caption={post.caption}
+            imageUrl={post.imageUrl}
+          />
+        ))}
+      </div>
+      <div className="app_footer">
+        <div className="app_footer_btn_container">
+          <IconButton
+            className="app_footer_btn"
+            color="primary"
+            onClick={() => setOpenUploadImage(true)}
+          >
+            <AddCircleIcon className="app_upload" style={{ fontSize: 50 }} />
+          </IconButton>
         </div>
       </div>
     </div>

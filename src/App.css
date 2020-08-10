@@ -13,9 +13,41 @@
   position: sticky;
   top: 0;
   width: 98%;
+
   margin: 0 auto;
-  z-index: 200;
-  padding-right: 100px;
+  z-index: 2;
+  box-shadow: 1px 3px 18px -10px rgba(0, 0, 0, 0.75);
+}
+.app_footer_btn {
+  margin: 0 auto;
+  box-shadow: 1px 3px 44px -24px rgba(0, 0, 0, 0.75);
+}
+.app_footer_btn_container {
+  position: relative;
+  top: -40px;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+}
+.app_upload {
+  text-align: center;
+}
+.app_footer {
+  background-color: white;
+  height: 50px;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  box-shadow: 1px 3px 18px -10px rgba(0, 0, 0, 0.75);
+}
+@media only screen and (max-width: 600px) {
+  .app_header {
+    padding: 5px;
+  }
 }
 .App {
   background-color: #fafafa;
@@ -27,4 +59,7 @@
 }
 .app_post {
   padding: 20px;
+}
+.app_header_btn {
+  margin-right: 80px;
 }

@@ -41,8 +41,11 @@
   color: #6082a3;
   border-top: 1px solid lightgray;
 }
-.post_comment {
+.post_comment_container {
   padding: 0 20px 10px 20px;
+}
+.post_comment {
+  padding-top: 10px;
 }
 .post_likes {
   padding-left: 20px;
