@@ -25,7 +25,7 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
-    width: 400,
+    width: 300,
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
@@ -44,12 +44,12 @@ function App() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [repeatpassword, setRepeatPassword] = useState("");
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const unsubcribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
-        console.log(authUser);
         setUser(authUser);
       } else {
         setUser(null);
@@ -72,17 +72,21 @@ function App() {
 
   const signUp = (event) => {
     event.preventDefault();
+    if (password == repeatpassword) {
+      auth
+        .createUserWithEmailAndPassword(email, password)
+        .then((authUser) => {
+          authUser.user.updateProfile({ displayName: username });
+        })
+        .catch((error) => alert(error.message));
 
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((authUser) => {
-        authUser.user.updateProfile({ displayName: username });
-      })
-      .then(alert("Sign Up successfully"))
-      .catch((error) => alert(error.message));
-    setOpen(false);
-    setEmail("");
-    setPassword("");
+      setOpen(false);
+      setEmail("");
+      setPassword("");
+      setRepeatPassword("");
+    } else {
+      alert("The repeat password is incorrect");
+    }
   };
 
   const signIn = (event) => {
@@ -99,6 +103,9 @@ function App() {
     event.preventDefault();
     auth.signOut();
   };
+  // const modalWidth = window.innerWidth > 600 ? 400 : 300;
+  // classes.paper.width = modalWidth;
+
   return (
     <div className="App">
       <Modal open={openUploadImage} onClose={() => setOpenUploadImage(false)}>
@@ -110,7 +117,11 @@ function App() {
           )}
         </div>
       </Modal>
-      <Modal open={openProfile} onClose={() => setOpenProfile(false)}>
+      <Modal
+        open={openProfile}
+        className="modal"
+        onClose={() => setOpenProfile(false)}
+      >
         <div style={modalStyle} className={classes.paper}>
           <center>
             <img
@@ -122,7 +133,7 @@ function App() {
           <Profile user={user}></Profile>
         </div>
       </Modal>
-      <Modal open={open} onClose={() => setOpen(false)}>
+      <Modal className="modal" open={open} onClose={() => setOpen(false)}>
         <div style={modalStyle} className={classes.paper}>
           <form className="app_signup" onSubmit={signUp}>
             <center>
@@ -150,7 +161,20 @@ function App() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             ></Input>
-            <Button type="submit">Submit</Button>
+            <Input
+              placeholder="repeat password"
+              type="password"
+              value={repeatpassword}
+              onChange={(e) => setRepeatPassword(e.target.value)}
+            ></Input>
+            <Button
+              className="app_form_submit"
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              Submit
+            </Button>
           </form>
         </div>
       </Modal>
@@ -177,7 +201,14 @@ function App() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             ></Input>
-            <Button type="submit">Submit</Button>
+            <Button
+              className="app_form_submit"
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              Submit
+            </Button>
           </form>
         </div>
       </Modal>
@@ -189,14 +220,41 @@ function App() {
         ></img>
         {user ? (
           <div className="app_header_btn">
-            <Button onClick={() => setOpenProfile(true)}>Profile</Button>
-            <Button onClick={signOut}>Sign Out</Button>
+            <Button
+              className="app_login_btn"
+              variant="outlined"
+              color="primary"
+              onClick={() => setOpenProfile(true)}
+            >
+              Profile
+            </Button>
+            <Button
+              className="app_login_btn"
+              variant="outlined"
+              color="primary"
+              onClick={signOut}
+            >
+              Sign Out
+            </Button>
           </div>
         ) : (
           <div className="app_login_container">
-            <div>Sign In to Upload Image</div>
-            <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
-            <Button onClick={() => setOpen(true)}>Sign Up</Button>
+            <Button
+              className="app_login_btn"
+              variant="outlined"
+              color="primary"
+              onClick={() => setOpenSignIn(true)}
+            >
+              Sign In
+            </Button>
+            <Button
+              className="app_login_btn"
+              variant="outlined"
+              color="primary"
+              onClick={() => setOpen(true)}
+            >
+              Sign Up
+            </Button>
           </div>
         )}
       </div>
@@ -216,13 +274,23 @@ function App() {
       </div>
       <div className="app_footer">
         <div className="app_footer_btn_container">
-          <IconButton
-            className="app_footer_btn"
-            color="primary"
-            onClick={() => setOpenUploadImage(true)}
-          >
-            <AddCircleIcon className="app_upload" style={{ fontSize: 50 }} />
-          </IconButton>
+          {user ? (
+            <IconButton
+              className="app_footer_btn"
+              color="primary"
+              onClick={() => setOpenUploadImage(true)}
+            >
+              <AddCircleIcon className="app_upload" style={{ fontSize: 50 }} />
+            </IconButton>
+          ) : (
+            <IconButton
+              className="app_footer_btn"
+              color="primary"
+              onClick={() => alert("Please sign in to upload image")}
+            >
+              <AddCircleIcon className="app_upload" style={{ fontSize: 50 }} />
+            </IconButton>
+          )}
         </div>
       </div>
     </div>

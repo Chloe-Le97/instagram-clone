@@ -7,6 +7,7 @@ import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import { db } from "./firebase";
 import firebase from "firebase";
+import "./Post.style.css";
 
 function Post({ postId, user, username, imageUrl, caption, avatar }) {
   const [comments, setComments] = useState([]);
