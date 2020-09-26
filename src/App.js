@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
+  const [loading, setLoading] = useState(true);
   const [modalStyle] = useState(getModalStyle);
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
@@ -51,8 +52,10 @@ function App() {
     const unsubcribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         setUser(authUser);
+        setLoading(false);
       } else {
         setUser(null);
+        setLoading(false);
       }
     });
     return () => {
@@ -107,192 +110,209 @@ function App() {
   // classes.paper.width = modalWidth;
 
   return (
-    <div className="App">
-      <Modal open={openUploadImage} onClose={() => setOpenUploadImage(false)}>
-        <div style={modalStyle} className={classes.paper}>
-          {user?.displayName ? (
-            <ImageUpload user={user} username={user.displayName} />
-          ) : (
-            <ImageUpload user={user} username={username} />
-          )}
+    <div>
+      {loading ? (
+        <div className="loading-container">
+          <div className="loading">Loading...</div>
         </div>
-      </Modal>
-      <Modal
-        open={openProfile}
-        className="modal"
-        onClose={() => setOpenProfile(false)}
-      >
-        <div style={modalStyle} className={classes.paper}>
-          <center>
+      ) : (
+        <div className="App">
+          <Modal
+            open={openUploadImage}
+            onClose={() => setOpenUploadImage(false)}
+          >
+            <div style={modalStyle} className={classes.paper}>
+              {user?.displayName ? (
+                <ImageUpload user={user} username={user.displayName} />
+              ) : (
+                <ImageUpload user={user} username={username} />
+              )}
+            </div>
+          </Modal>
+          <Modal
+            open={openProfile}
+            className="modal"
+            onClose={() => setOpenProfile(false)}
+          >
+            <div style={modalStyle} className={classes.paper}>
+              <center>
+                <img
+                  className="app_header_img"
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/128px-Instagram_logo.svg.png"
+                  alt="instagram"
+                ></img>
+              </center>
+              <Profile user={user}></Profile>
+            </div>
+          </Modal>
+          <Modal className="modal" open={open} onClose={() => setOpen(false)}>
+            <div style={modalStyle} className={classes.paper}>
+              <form className="app_signup" onSubmit={signUp}>
+                <center>
+                  <img
+                    className="app_header_img"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/128px-Instagram_logo.svg.png"
+                    alt="instagram"
+                  ></img>
+                </center>
+                <Input
+                  placeholder="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                ></Input>
+                <Input
+                  placeholder="email"
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                ></Input>
+                <Input
+                  placeholder="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                ></Input>
+                <Input
+                  placeholder="repeat password"
+                  type="password"
+                  value={repeatpassword}
+                  onChange={(e) => setRepeatPassword(e.target.value)}
+                ></Input>
+                <Button
+                  className="app_form_submit"
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                >
+                  Submit
+                </Button>
+              </form>
+            </div>
+          </Modal>
+
+          <Modal open={openSignIn} onClose={() => setOpenSignIn(false)}>
+            <div style={modalStyle} className={classes.paper}>
+              <form className="app_signup" onSubmit={signIn}>
+                <center>
+                  <img
+                    className="app_header_img"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/128px-Instagram_logo.svg.png"
+                    alt="instagram"
+                  ></img>
+                </center>
+                <Input
+                  placeholder="email"
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                ></Input>
+                <Input
+                  placeholder="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                ></Input>
+                <Button
+                  className="app_form_submit"
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                >
+                  Submit
+                </Button>
+              </form>
+            </div>
+          </Modal>
+          <div className="app_header">
             <img
               className="app_header_img"
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/128px-Instagram_logo.svg.png"
               alt="instagram"
             ></img>
-          </center>
-          <Profile user={user}></Profile>
-        </div>
-      </Modal>
-      <Modal className="modal" open={open} onClose={() => setOpen(false)}>
-        <div style={modalStyle} className={classes.paper}>
-          <form className="app_signup" onSubmit={signUp}>
-            <center>
-              <img
-                className="app_header_img"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/128px-Instagram_logo.svg.png"
-                alt="instagram"
-              ></img>
-            </center>
-            <Input
-              placeholder="username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            ></Input>
-            <Input
-              placeholder="email"
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></Input>
-            <Input
-              placeholder="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            ></Input>
-            <Input
-              placeholder="repeat password"
-              type="password"
-              value={repeatpassword}
-              onChange={(e) => setRepeatPassword(e.target.value)}
-            ></Input>
-            <Button
-              className="app_form_submit"
-              variant="contained"
-              color="primary"
-              type="submit"
-            >
-              Submit
-            </Button>
-          </form>
-        </div>
-      </Modal>
-
-      <Modal open={openSignIn} onClose={() => setOpenSignIn(false)}>
-        <div style={modalStyle} className={classes.paper}>
-          <form className="app_signup" onSubmit={signIn}>
-            <center>
-              <img
-                className="app_header_img"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/128px-Instagram_logo.svg.png"
-                alt="instagram"
-              ></img>
-            </center>
-            <Input
-              placeholder="email"
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></Input>
-            <Input
-              placeholder="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            ></Input>
-            <Button
-              className="app_form_submit"
-              variant="contained"
-              color="primary"
-              type="submit"
-            >
-              Submit
-            </Button>
-          </form>
-        </div>
-      </Modal>
-      <div className="app_header">
-        <img
-          className="app_header_img"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/128px-Instagram_logo.svg.png"
-          alt="instagram"
-        ></img>
-        {user ? (
-          <div className="app_header_btn">
-            <Button
-              className="app_login_btn"
-              variant="outlined"
-              color="primary"
-              onClick={() => setOpenProfile(true)}
-            >
-              Profile
-            </Button>
-            <Button
-              className="app_login_btn"
-              variant="outlined"
-              color="primary"
-              onClick={signOut}
-            >
-              Sign Out
-            </Button>
+            {user ? (
+              <div className="app_header_btn">
+                <Button
+                  className="app_login_btn"
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => setOpenProfile(true)}
+                >
+                  Profile
+                </Button>
+                <Button
+                  className="app_login_btn"
+                  variant="outlined"
+                  color="primary"
+                  onClick={signOut}
+                >
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <div className="app_login_container">
+                <Button
+                  className="app_login_btn"
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => setOpenSignIn(true)}
+                >
+                  Sign In
+                </Button>
+                <Button
+                  className="app_login_btn"
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => setOpen(true)}
+                >
+                  Sign Up
+                </Button>
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="app_login_container">
-            <Button
-              className="app_login_btn"
-              variant="outlined"
-              color="primary"
-              onClick={() => setOpenSignIn(true)}
-            >
-              Sign In
-            </Button>
-            <Button
-              className="app_login_btn"
-              variant="outlined"
-              color="primary"
-              onClick={() => setOpen(true)}
-            >
-              Sign Up
-            </Button>
-          </div>
-        )}
-      </div>
 
-      <div className="app_post">
-        {posts.map(({ id, post }) => (
-          <Post
-            key={id}
-            postId={id}
-            user={user}
-            avatar={post.userAvatar}
-            username={post.username}
-            caption={post.caption}
-            imageUrl={post.imageUrl}
-          />
-        ))}
-      </div>
-      <div className="app_footer">
-        <div className="app_footer_btn_container">
-          {user ? (
-            <IconButton
-              className="app_footer_btn"
-              color="primary"
-              onClick={() => setOpenUploadImage(true)}
-            >
-              <AddCircleIcon className="app_upload" style={{ fontSize: 50 }} />
-            </IconButton>
-          ) : (
-            <IconButton
-              className="app_footer_btn"
-              color="primary"
-              onClick={() => alert("Please sign in to upload image")}
-            >
-              <AddCircleIcon className="app_upload" style={{ fontSize: 50 }} />
-            </IconButton>
-          )}
+          <div className="app_post">
+            {posts.map(({ id, post }) => (
+              <Post
+                key={id}
+                postId={id}
+                user={user}
+                avatar={post.userAvatar}
+                username={post.username}
+                caption={post.caption}
+                imageUrl={post.imageUrl}
+              />
+            ))}
+          </div>
+          <div className="app_footer">
+            <div className="app_footer_btn_container">
+              {user ? (
+                <IconButton
+                  className="app_footer_btn"
+                  color="primary"
+                  onClick={() => setOpenUploadImage(true)}
+                >
+                  <AddCircleIcon
+                    className="app_upload"
+                    style={{ fontSize: 50 }}
+                  />
+                </IconButton>
+              ) : (
+                <IconButton
+                  className="app_footer_btn"
+                  color="primary"
+                  onClick={() => alert("Please sign in to upload image")}
+                >
+                  <AddCircleIcon
+                    className="app_upload"
+                    style={{ fontSize: 50 }}
+                  />
+                </IconButton>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

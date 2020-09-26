@@ -1,6 +1,19 @@
 * {
   margin: 0;
 }
+.loading-container {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+}
+.loading {
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  margin: 0 auto;
+  font-weight: 700;
+  font-size: 20px;
+}
 *::-webkit-scrollbar {
   display: none;
 }
