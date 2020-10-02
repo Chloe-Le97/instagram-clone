@@ -19,13 +19,6 @@ function Profile({ user }) {
     });
   };
 
-  useEffect(() => {
-    const unsubcribe = setAvatar(user.photoURL);
-    // return () => {
-    //   unsubcribe();
-    // };
-  }, [avatar]);
-
   const handleChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
@@ -60,15 +53,13 @@ function Profile({ user }) {
           .getDownloadURL()
           .then((url) => {
             console.log(url);
-            setAvatar(url);
+            setAvatar(URL.createObjectURL(image));
             user.updateProfile({
               photoURL: url,
             });
-            setAvatar(url);
             setProgress(0);
             setImage(null);
             setUploadMenu(false);
-            alert("Change profile picture successfully");
           });
       }
     );
