@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import firebase from "firebase";
 import "./App.css";
 import Post from "./Post";
 import ImageUpload from "./ImageUpload";
@@ -102,12 +103,18 @@ function App() {
     setPassword("");
   };
 
+  const signInWithGoogle = (event) =>{
+    event.preventDefault();
+    var provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).catch((error)=>alert('Sign In error'));
+    setOpenSignIn(false)
+    setOpen(false);
+  }
+
   const signOut = (event) => {
     event.preventDefault();
     auth.signOut();
   };
-  // const modalWidth = window.innerWidth > 600 ? 400 : 300;
-  // classes.paper.width = modalWidth;
 
   return (
     <div>
@@ -185,9 +192,18 @@ function App() {
                   color="primary"
                   type="submit"
                 >
-                  Submit
+                  Sign Up
                 </Button>
               </form>
+              <Button
+                  className="app_form_submit"
+                  variant="contained"
+                  color="primary"
+                  type="button"
+                  onClick={signInWithGoogle}
+                >
+                  Sign In with Google
+                </Button>
             </div>
           </Modal>
 
@@ -219,9 +235,18 @@ function App() {
                   color="primary"
                   type="submit"
                 >
-                  Submit
+                  Sign In
                 </Button>
               </form>
+              <Button
+                  className="app_form_submit"
+                  variant="contained"
+                  color="primary"
+                  type="button"
+                  onClick={signInWithGoogle}
+                >
+                  Sign In with Google
+                </Button>
             </div>
           </Modal>
           <div className="app_header">
