@@ -1,10 +1,16 @@
 .profile_input {
   width: 100%;
   border: none;
-  border-bottom: 1px solid lightgray;
-  font-size: 20px;
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
 }
 .profile_avatar {
   width: 100px;
   height: 100px;
+}
+.profile {
+  font-family: "Poppins", sans-serif;
+}
+.profile_edit_btn {
+  cursor: pointer;
 }

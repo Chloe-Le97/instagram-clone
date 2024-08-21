@@ -7,6 +7,7 @@ import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import { db } from "./firebase";
 import firebase from "firebase";
+import "./Post.style.css";
 
 function Post({ postId, user, username, imageUrl, caption, avatar }) {
   const [comments, setComments] = useState([]);
@@ -97,10 +98,6 @@ function Post({ postId, user, username, imageUrl, caption, avatar }) {
         .then(setLike(!like));
     }
   };
-  // const likeAction = (event) => {
-  //   event.preventDefault();
-  //   setLike({ [event.target.name]: !event.target.checked });
-  // };
 
   return (
     <div className="post">
@@ -136,14 +133,16 @@ function Post({ postId, user, username, imageUrl, caption, avatar }) {
             }
           />
         )}
-        {likes.length > 0 ? (
+        {likes.length > 1 ? (
           <div className="post_like">
             Liked by
-            {likes.map((like) => (
-              <strong>&nbsp;{like.username},</strong>
+            {likes.map((like,index) => (
+              <div className='like_by'>
+              {index==likes.length-1?(<>&nbsp;and<strong>&nbsp;{like.username}</strong></>):(<><strong>&nbsp;{like.username},</strong></>)}
+              </div>
             ))}
           </div>
-        ) : (
+        ) : likes.length == 1?(<>Liked by <strong>&nbsp;{likes[0].username}</strong></> ): (
           "Be the first one to like"
         )}
       </div>

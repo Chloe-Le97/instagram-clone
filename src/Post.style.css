@@ -43,6 +43,7 @@
 }
 .post_comment_container {
   padding: 0 20px 10px 20px;
+  border-top: 0.5px solid rgba(211, 211, 211, 0.178);
 }
 .post_comment {
   padding-top: 10px;
@@ -54,4 +55,22 @@
 .post_like {
   display: inline;
   margin-left: -20px;
+}
+.like_by{
+  display: inline;
+}
+@media only screen and (max-width: 600px) {
+  .post {
+    background-color: #fafafa;
+    border: none;
+  }
+  .post_input {
+    margin-left: 10px;
+    background-color: #fafafa;
+    border-top: 1px solid rgba(211, 211, 211, 0.589);
+  }
+  .post_button {
+    border-top: 1px solid rgba(211, 211, 211, 0.582);
+    margin-right: 10px;
+  }
 }

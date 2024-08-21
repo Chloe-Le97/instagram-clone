@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import { Button } from "@material-ui/core";
 import { storage, db } from "./firebase";
 import "./Profile.css";
+import EditIcon from "@material-ui/icons/Edit";
 
 function Profile({ user }) {
   const [username, setUsername] = useState(user.displayName);
+  const [avatar, setAvatar] = useState(user.photoURL);
   const [uploadMenu, setUploadMenu] = useState(false);
   const [progress, setProgress] = useState(0);
   const [image, setImage] = useState(null);
@@ -27,10 +29,12 @@ function Profile({ user }) {
     event.preventDefault();
     setUploadMenu(true);
   };
-  const upload = (event) => {
+
+  const upload = async (event) => {
+    event.preventDefault();
     const uploadTask = storage.ref(`avatar/${image.name}`).put(image);
 
-    uploadTask.on(
+    await uploadTask.on(
       "state_changed",
       (snapshot) => {
         const progress = Math.round(
@@ -41,13 +45,15 @@ function Profile({ user }) {
       (error) => {
         alert("error.message");
       },
-      () => {
+      async () => {
         // complete function
-        storage
+        await storage
           .ref("avatar")
           .child(image.name)
           .getDownloadURL()
           .then((url) => {
+            console.log(url);
+            setAvatar(URL.createObjectURL(image));
             user.updateProfile({
               photoURL: url,
             });
@@ -58,11 +64,14 @@ function Profile({ user }) {
       }
     );
   };
-
+  const handleChangeUserName = (event) => {
+    event.preventDefault();
+    document.getElementById("profile_input").focus();
+  };
   return (
     <div className="profile">
       <center>
-        <Avatar className="profile_avatar" src={`${user.photoURL}`} />
+        <Avatar className="profile_avatar" src={`${avatar}`} />
         <Button onClick={changeAvatar}>Change Profile Photo</Button>
         {uploadMenu ? (
           <div>
@@ -78,11 +87,17 @@ function Profile({ user }) {
           ""
         )}
       </center>
-      <div>
-        <strong>Username</strong>
-      </div>
       <form onSubmit={changeUsername}>
+        <label>
+          <strong>Username</strong>&nbsp;
+          <EditIcon
+            className="profile_edit_btn"
+            style={{ fontSize: 20 }}
+            onClick={handleChangeUserName}
+          />
+        </label>
         <input
+          id="profile_input"
           className="profile_input"
           placeholder="New Username"
           value={username}
